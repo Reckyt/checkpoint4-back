@@ -10,6 +10,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // ---------------------------------------------------------------------------------
 
+app.get("/api/show", (req, res) => {
+  connection.query("SELECT * from spectacle", (err, results) => {
+    if (err) {
+      res.status(500).send("Error retrieving shows");
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+// ---------------------------------------------------------------------------------
+
 app.get("/api/artist", (req, res) => {
   connection.query("SELECT * from artist", (err, results) => {
     if (err) {
@@ -65,6 +77,6 @@ app.listen(port, err => {
   if (err) {
     throw new Error("There is an error");
   }
-  console.log("There is an port");
+  console.log("ouverture du port");
 });
 //
