@@ -8,10 +8,12 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/api/heroes", (req, res) => {
-  connection.query("SELECT * from heroe", (err, results) => {
+// ---------------------------------------------------------------------------------
+
+app.get("/api/artist", (req, res) => {
+  connection.query("SELECT * from artist", (err, results) => {
     if (err) {
-      res.status(500).send("Error retrieving employees");
+      res.status(500).send("Error retrieving artist");
     } else {
       res.json(results);
     }
@@ -56,6 +58,8 @@ app.delete("/api/url/:id", (req, res) => {
     }
   });
 });
+
+// ---------------------------------------------------------------------------------
 
 app.listen(port, err => {
   if (err) {
