@@ -17,7 +17,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-// ---------------------------------------------------------------------------------
+// ----------------GET ALL SHOWS -----------------------------------------------------------------
 
 app.get("/api/show", (req, res) => {
   connection.query("SELECT * from spectacle", (err, results) => {
@@ -29,27 +29,38 @@ app.get("/api/show", (req, res) => {
   });
 });
 
-// ---------------------------------------------------------------------------------
+// -----------------GET ALL ARTIST----------------------------------------------------------------
 
-app.get("/api/artist", (req, res) => {
-  connection.query("SELECT * from artist", (err, results) => {
-    if (err) {
-      res.status(500).send("Error retrieving artist");
-    } else {
-      res.json(results);
+app.get("/api/artist/:id", (req, res) => {
+  const idQuery = req.params.id;
+  connection.query(
+    "SELECT * from artist a JOIN spectacle s ON a.show_id=s.id where show_id = ?",
+    idQuery,
+    (err, results) => {
+      if (err) {
+        res.status(500).send("Error retrieving artist");
+      } else {
+        res.json(results);
+      }
     }
-  });
+  );
 });
 
-app.post("/api/url", (req, res) => {
-  const formData = req.body;
-  connection.query("INSERT INTO table SET ?", formData, (err, results) => {
-    if (err) {
-      res.status(500).send("Error saving");
-    } else {
-      res.sendStatus(200);
+// -----------------POST A PRICE----------------------------------------------------------------
+
+app.post("/api/command/:price", (req, res) => {
+  const formData = { price: req.body.price };
+  connection.query(
+    "INSERT INTO user_has_show SET ?",
+    formData,
+    (err, results) => {
+      if (err) {
+        res.status(500).send("Error saving");
+      } else {
+        res.sendStatus(200);
+      }
     }
-  });
+  );
 });
 
 app.put("/api/url/:id", (req, res) => {
