@@ -63,6 +63,23 @@ app.post("/api/command/:price", (req, res) => {
   );
 });
 
+// -----------------POST A DATE----------------------------------------------------------------
+
+app.post("/api/command/:date", (req, res) => {
+  const formData = { date: req.body.date };
+  connection.query(
+    "INSERT INTO user_has_show SET ?",
+    formData,
+    (err, results) => {
+      if (err) {
+        res.status(500).send("Error saving");
+      } else {
+        res.sendStatus(200);
+      }
+    }
+  );
+});
+
 app.put("/api/url/:id", (req, res) => {
   const idUrl = req.params.id;
   const formData = req.body;
